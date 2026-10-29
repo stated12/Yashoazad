@@ -1,0 +1,29 @@
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-serif: "Cormorant Garamond", Georgia, serif;
+  --font-sans: "DM Sans", system-ui, sans-serif;
+  --color-paper: #fbf8f2;
+  --color-paper-deep: #f3eee3;
+  --color-line: #e6dfcf;
+  --color-ink: #2b3a55;
+  --color-body: #4a5873;
+  --color-muted: #6f7b91;
+  --color-navy: #2f4468;
+  --color-navy-deep: #1f2f4d;
+  --color-gold: #b9924a;
+  --color-gold-deep: #8d6a2b;
+  --color-gold-soft: #f6eedb;
+}
+
+html { scroll-behavior: smooth; }
+body { background: var(--color-paper); color: var(--color-ink); font-family: var(--font-sans); -webkit-font-smoothing: antialiased; }
+a { text-decoration: none; }
+:focus-visible { outline: 2px solid var(--color-gold); outline-offset: 2px; }
+.prose-article p { margin: 0 0 1.1em; line-height: 1.8; color: var(--color-body); }
+.prose-article h2 { font-family: var(--font-serif); font-size: 1.8rem; color: var(--color-navy-deep); margin: 1.6em 0 .5em; }
+.prose-article h3 { font-family: var(--font-serif); font-size: 1.4rem; color: var(--color-navy-deep); margin: 1.4em 0 .4em; }
+.prose-article ul { list-style: disc; padding-left: 1.3em; margin: 0 0 1.1em; color: var(--color-body); }
+.prose-article blockquote { border-left: 3px solid var(--color-gold); padding-left: 1em; font-style: italic; color: var(--color-body); margin: 1.2em 0; }
+.prose-article a { color: var(--color-gold-deep); text-decoration: underline; }
