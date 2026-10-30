@@ -4,7 +4,7 @@ import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import { createClient } from "@supabase/supabase-js";
 import { db } from "@/lib/supabase";
-import { TOPICS } from "@/lib/site";
+import { SITE, TOPICS } from "@/lib/site";
 import { slugify } from "@/lib/slug";
 import { authConfigured, authorEmail, currentAuthor, endSession, startSession } from "@/lib/author-auth";
 import { MAX_IMAGE_MB, MAX_VIDEO_MB, type ActionResult, type EditorArticle, type SaveResult, type UploadResult } from "@/lib/author-types";
@@ -25,26 +25,26 @@ export async function requestCode(_prev: LoginState, fd: FormData): Promise<Logi
   if (!authConfigured()) return { ok: false, error: "Sign-in is not set up yet. See docs/AUTHOR_SETUP.md." };
   const email = String(fd.get("email") || "").trim().toLowerCase();
   if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) return { ok: false, error: "Enter a valid email address." };
-  // Only the author's address ever receives a code. Other addresses get the same reply.
+  // Only the author's address ever receives a link. Other addresses get the same reply.
   if (email === authorEmail()) {
-    const { error } = await authClient().auth.signInWithOtp({ email, options: { shouldCreateUser: false } });
-    if (error) return { ok: false, error: "Could not send the code just now. Wait a minute and try again." };
+    const { error } = await authClient().auth.signInWithOtp({
+      email,
+      options: { shouldCreateUser: false, emailRedirectTo: `${SITE.url}/author/callback` },
+    });
+    if (error) return { ok: false, error: "Could not send the sign-in link just now. Wait a minute and try again." };
   }
   return { ok: true, email };
 }
 
-export async function verifyCode(_prev: LoginState, fd: FormData): Promise<LoginState> {
+// Called by /author/callback with the access token from the magic link. Supabase confirms the
+// token is genuine; the site then issues its own signed cookie, only for the author's address.
+export async function completeSignIn(accessToken: string): Promise<{ ok: boolean; error?: string }> {
   if (!authConfigured()) return { ok: false, error: "Sign-in is not set up yet." };
-  const email = String(fd.get("email") || "").trim().toLowerCase();
-  const token = String(fd.get("code") || "").replace(/\s+/g, "");
-  if (!/^\d{6,10}$/.test(token)) return { ok: true, email, error: "Enter the numeric code from the email." };
-  if (email !== authorEmail()) return { ok: true, email, error: "That code is not right or has expired." };
-  const { data, error } = await authClient().auth.verifyOtp({ email, token, type: "email" });
-  if (error || data.user?.email?.toLowerCase() !== authorEmail()) {
-    return { ok: true, email, error: "That code is not right or has expired." };
-  }
-  await startSession(email);
-  redirect("/author");
+  if (typeof accessToken !== "string" || accessToken.length < 20 || accessToken.length > 4096) return { ok: false, error: "This sign-in link is not valid." };
+  const { data, error } = await authClient().auth.getUser(accessToken);
+  if (error || data.user?.email?.toLowerCase() !== authorEmail()) return { ok: false, error: "This sign-in link is not valid or has expired." };
+  await startSession(authorEmail());
+  return { ok: true };
 }
 
 export async function signOut(): Promise<void> {
