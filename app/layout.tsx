@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import AnalyticsGate from "@/components/AnalyticsGate";
+import ConsentManager from "@/components/ConsentManager";
 import { SITE } from "@/lib/site";
 
 export const metadata: Metadata = {
@@ -21,6 +23,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <Header />
         <main id="main" className="flex-1">{children}</main>
         <Footer />
+        <ConsentManager />
+        <AnalyticsGate />
       </body>
     </html>
   );
