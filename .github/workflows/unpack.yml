@@ -1,20 +1,36 @@
-name: Unpack site
+ name: Unpack site
+
 on: [push, workflow_dispatch]
+
 permissions:
   contents: write
+
 jobs:
   unpack:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+
       - name: Extract website
-        run: unzip -o site.zip -d .
+        run: unzip -o legal-update.zip -d .
+
       - name: Remove ZIP file
-        run: rm site.zip
+        run: rm legal-update.zip
+
       - name: Commit extracted files
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add -A
-          git diff --cached --quiet || (git commit -m "Extract website files" && git push)
+          git diff --cached --quiet || (git commit -m "Apply legal and website updates" && git push)
+
+### Next
+1. Save the file.
+2. Commit the change to the `main` branch.
+3. GitHub Actions should automatically run.
+
+**Important:** Make sure `legal-update.zip` is still in the repository root, as it is in your screenshot.
+
+Send me the GitHub Actions result once it runs.
