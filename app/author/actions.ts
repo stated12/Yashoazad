@@ -91,6 +91,8 @@ function publishProblem(r: { title: string; summary: string; body: string; title
 }
 
 // ---------- save ----------
+type ExistingRow = { status: string; slug: string; published_at: string | null };
+
 export async function saveArticle(input: EditorArticle): Promise<SaveResult> {
   if (!(await currentAuthor())) return { ok: false, error: "You have been signed out. Reload the page and sign in again. Your text is still on this screen." };
   const c = db();
@@ -111,12 +113,12 @@ export async function saveArticle(input: EditorArticle): Promise<SaveResult> {
   const userSlug = slugify(clip(input.slug, 120));
   const id = input.id || null;
 
-  let existing: { status: string; slug: string; published_at: string | null } | null = null;
+  let existing: ExistingRow | null = null;
   if (id) {
     const { data, error } = await c.from("articles").select("status, slug, published_at").eq("id", id).maybeSingle();
     if (error) return { ok: false, error: setupError(error.message) };
     if (!data) return { ok: false, error: "This article no longer exists." };
-    existing = data as typeof existing;
+    existing = data as ExistingRow;
   }
 
   let slug = userSlug || existing?.slug || slugify(row.title) || "article-" + Date.now().toString(36);
