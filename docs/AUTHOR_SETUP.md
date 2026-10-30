@@ -1,5 +1,5 @@
 # Author Publishing System: setup
-
+ 
 ## 1. Database (Supabase > SQL Editor)
 Run `supabase/03_author.sql` once. It adds Hindi, SEO and image columns to `articles`, lets English be optional, and creates the public `article-media` storage bucket. Existing articles are not changed.
 
