@@ -1,4 +1,4 @@
-import CallbackClient from "@/components/author/CallbackClient";
+import CallbackClient from "@/components/author/callback/CallbackClient";
 
 export const dynamic = "force-dynamic";
 
