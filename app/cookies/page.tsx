@@ -28,7 +28,7 @@ export default function Cookies() {
     >
       <H>1. Cookies set by this website</H>
       <p>
-        This website does not set any cookies of its own at present.{" "}
+        This website does not set any cookies for visitors at present. The only cookie it sets is <strong>ya_author</strong>, a strictly necessary sign-in cookie used only when the site&apos;s author signs in to the private dashboard at /author.{" "}
         <Confirm>check in a browser&apos;s developer tools after launch that no cookies are set, and update this page if any appear</Confirm>
       </p>
 
@@ -45,6 +45,8 @@ export default function Cookies() {
           </thead>
           <tbody>
             <Row a="ya_consent_v1" b="Remembers your analytics choice." c="Browser local storage on your device (not a cookie). Essential." d="Until you clear your browser data or change the choice." />
+            <Row a="ya_author" b="Keeps the site's author signed in to the private dashboard." c="First-party cookie, essential. Set only on /author after sign-in; never set for visitors." d="Up to 30 days, or until the author signs out." />
+            <Row a="YouTube / Vimeo videos" b="Plays videos embedded in some articles." c="Nothing is loaded until you press play. After that the provider's own cookies and policies apply." d="Set by the provider." />
             <Row a="Vercel Web Analytics" b="Counts page views and referrers to understand how the site is used." c="Analytics. Vercel states it works without third-party cookies and identifies visitors by a hash of the request." d="Vercel states that visitor sessions are discarded after 24 hours." />
             <Row a="Google Fonts" b="Delivers the site's typefaces." c="No cookie is set by us. Your browser requests the fonts from Google, which can see your IP address." d="Per request." />
           </tbody>

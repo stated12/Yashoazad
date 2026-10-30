@@ -63,6 +63,9 @@ export default function Privacy() {
           <strong>Visit statistics.</strong> We use Vercel Web Analytics to count page views and referrers. Vercel states that it works without third-party cookies and identifies visitors by a hash created from the request rather than a stored ID. See the <Link href="/cookies" className="text-gold-deep underline">Cookie Policy</Link> to change your choice.
         </li>
         <li>
+          <strong>Author sign-in.</strong> The site&apos;s author signs in to a private dashboard with an emailed code. This applies only to the author and not to visitors.
+        </li>
+        <li>
           <strong>Technical logs.</strong> Our hosting provider processes standard technical information (such as IP address and browser type) to deliver the site and keep it secure.
         </li>
       </ul>
@@ -70,6 +73,8 @@ export default function Privacy() {
       <H>3. Who handles your information for us</H>
       <ul className="list-disc pl-6 space-y-2">
         <li><strong>Supabase</strong>: stores the enquiries you submit in a database that is not publicly accessible.</li>
+        <li><strong>Supabase Storage</strong>: stores the photographs and short videos published in articles. These files are public by design.</li>
+        <li><strong>YouTube or Vimeo</strong>: some articles embed videos. Nothing is loaded from them until you press play, at which point your browser connects to that service under its own privacy policy.</li>
         <li><strong>Resend</strong>: delivers each enquiry by email to the site owner&apos;s inbox.</li>
         <li><strong>Vercel</strong>: hosts the website and provides Web Analytics.</li>
         <li><strong>Google Fonts</strong>: the site&apos;s typefaces are loaded from Google, so your browser connects to Google&apos;s servers and your IP address is visible to Google when a page loads.</li>

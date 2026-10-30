@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&family=Noto+Sans+Devanagari:wght@400;500;600&family=Noto+Serif+Devanagari:wght@400;500;600&display=swap');
 @import "tailwindcss";
 
 @theme {
@@ -27,3 +27,9 @@ a { text-decoration: none; }
 .prose-article ul { list-style: disc; padding-left: 1.3em; margin: 0 0 1.1em; color: var(--color-body); }
 .prose-article blockquote { border-left: 3px solid var(--color-gold); padding-left: 1em; font-style: italic; color: var(--color-body); margin: 1.2em 0; }
 .prose-article a { color: var(--color-gold-deep); text-decoration: underline; }
+
+/* Hindi text */
+:lang(hi) { font-family: "Noto Sans Devanagari", var(--font-sans); }
+:lang(hi) .font-serif, :lang(hi).font-serif, :lang(hi) .prose-article h2, :lang(hi) .prose-article h3 { font-family: "Noto Serif Devanagari", var(--font-serif); font-weight: 500; }
+:lang(hi) h1, :lang(hi) h2 { line-height: 1.4; }
+:lang(hi) .prose-article p, :lang(hi) .prose-article li { line-height: 1.9; }

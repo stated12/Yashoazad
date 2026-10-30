@@ -44,15 +44,25 @@ export default async function Insights({ searchParams }: { searchParams: Promise
           </div>
         ) : (
           <div className="grid gap-5 md:grid-cols-2">
-            {articles.map((a) => (
-              <Link key={a.id} href={`/insights/${a.slug}`} className="block rounded-xl border border-line bg-white p-6 hover:border-gold transition-colors no-underline">
-                <p className="text-xs font-medium text-gold-deep mb-2">
-                  {a.access === "exclusive" ? "Exclusive · " : ""}{a.topic || "Article"} · {new Date(a.published_at).toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" })}
-                </p>
-                <h2 className="font-serif text-2xl text-navy-deep leading-snug">{a.title}</h2>
-                <p className="mt-2 text-sm leading-relaxed text-body">{a.summary}</p>
-              </Link>
-            ))}
+            {articles.map((a) => {
+              const hiOnly = a.langs.length === 1 && a.langs[0] === "hi";
+              return (
+                <Link key={a.id} href={`/insights/${a.slug}`} className="block overflow-hidden rounded-xl border border-line bg-white hover:border-gold transition-colors no-underline">
+                  {a.image_url ? (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img src={a.image_url} alt="" loading="lazy" className="w-full object-cover" style={{ aspectRatio: "16 / 9" }} />
+                  ) : null}
+                  <div className="p-6" lang={hiOnly ? "hi" : undefined}>
+                    <p className="text-xs font-medium text-gold-deep mb-2" lang="en">
+                      {a.access === "exclusive" ? "Exclusive · " : ""}{a.topic || "Article"} · {new Date(a.published_at).toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" })}
+                      {a.langs.length > 1 ? " · English / हिन्दी" : hiOnly ? " · हिन्दी" : ""}
+                    </p>
+                    <h2 className="font-serif text-2xl text-navy-deep leading-snug">{a.title}</h2>
+                    <p className="mt-2 text-sm leading-relaxed text-body">{a.summary}</p>
+                  </div>
+                </Link>
+              );
+            })}
           </div>
         )}
       </Section>
