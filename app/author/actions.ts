@@ -1,5 +1,6 @@
 "use server";
 
+import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import { createClient } from "@supabase/supabase-js";
@@ -21,6 +22,24 @@ function authClient() {
   });
 }
 
+// The sign-in link must return to the same address the author is using (the Vercel test address now,
+// the real domain later). Supabase only honours addresses listed under Redirect URLs, so a spoofed
+// host cannot redirect anywhere else. Falls back to the configured site address.
+async function callbackUrl(): Promise<string> {
+  try {
+    const h = await headers();
+    const host = (h.get("x-forwarded-host") || h.get("host") || "").split(",")[0].trim();
+    if (/^[a-z0-9.-]+(:\d+)?$/i.test(host)) {
+      const local = /^(localhost|127\.0\.0\.1)(:|$)/.test(host);
+      const proto = local ? "http" : "https";
+      return `${proto}://${host}/author/callback`;
+    }
+  } catch {
+    // fall through
+  }
+  return `${SITE.url}/author/callback`;
+}
+
 export async function requestCode(_prev: LoginState, fd: FormData): Promise<LoginState> {
   if (!authConfigured()) return { ok: false, error: "Sign-in is not set up yet. See docs/AUTHOR_SETUP.md." };
   const email = String(fd.get("email") || "").trim().toLowerCase();
@@ -29,7 +48,7 @@ export async function requestCode(_prev: LoginState, fd: FormData): Promise<Logi
   if (email === authorEmail()) {
     const { error } = await authClient().auth.signInWithOtp({
       email,
-      options: { shouldCreateUser: false, emailRedirectTo: `${SITE.url}/author/callback` },
+      options: { shouldCreateUser: false, emailRedirectTo: await callbackUrl() },
     });
     if (error) return { ok: false, error: "Could not send the sign-in link just now. Wait a minute and try again." };
   }
